@@ -1,0 +1,321 @@
+%	Documentação do Trabalho Prático 0 de AEDSIII
+%	@Bruno Maciel Peres
+%
+%	* Você pode identificar erros de grafia através do seguinte comando linux:
+%		aspell --encoding="iso8859-1" -c -t=tex --lang="pt_BR" tp0.tex
+%	
+%	Tenha cuidado com problemas de codificação, você pode perder muito tempo com isso (ter que reescrever o texto por que os caracteres % acendutados não aparecem corretamento no pdf, por exemplo). Se você usa Vi/Vim, ele identifica a codificação sozinho, em editores do tipo % Kate/Kwrite você pode definir a codificação em Ferramentas/Codificação, escolha a opção Oeste Europeu (iso8859-1).
+%	Para compilar o texto utilize o comando make (foi criado um Makefile)
+%	Para maiores informações consulte referências sobre LaTeX
+
+\documentclass[12pt]{article}
+\usepackage{sbc-template}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{subfigure}
+\usepackage{times,amsmath,epsfig}
+\usepackage{graphicx,url}
+ \makeatletter
+ \newif\if@restonecol
+ \makeatother
+ \let\algorithm\relax
+ \let\endalgorithm\relax
+\usepackage[lined,algonl,ruled]{algorithm2e}
+\usepackage{multirow}
+\usepackage[brazil]{babel}
+\usepackage[latin1]{inputenc}
+
+\sloppy
+
+\title{TRABALHO PRÁTICO 0: \\ Problema do casamento estável}
+
+\author{Bruno Maciel Peres}
+
+\address{Departamento de Ciência da Computação -- Universidade Federal de Minas Gerais (UFMG)
+\email{brunomperes@dcc.ufmg.br}
+}
+
+\begin{document} 
+
+\maketitle
+
+\begin{resumo} 
+Este relatório descreve uma solução proposta para o problema do casamento estável (\textit{Stable Marriage Problem}, em inglês), utilizando listas encadeadas na linguagem C. Os princiais objetivos deste trabalho são: (1) a prática da linguagem C e (2) a introdução ao estudo de problemas complexos e suas soluções.
+\end{resumo}
+
+\section{INTRODUÇÃO}
+
+Neste trabalho, descrevemos e implementamos um algoritmo que utiliza uma heurística para resolver o problema do casamento estável. O SMP, como será referido a partir de então, é um problema conhecido e foco de estudo nas áreas de Matemática e da Ciência da Computação.
+
+	O problema em questão, consiste em encontrar \textit{matchings} estáveis para todos os elementos de dois grupos que possuem uma ordem de preferência sobre os elementos do outro grupo. Um \textit{matching} ocorre quando dois elementos de grupos distintos estão ligados por uma relação (casamento) e é considerado estável quando não há, dentre as opções de preferência de cada um dos casados, outra combinação onde ambos preferiam estar casados com outros indíviduos.
+
+	Este algoritmo possui aplicabilidade para resolução de problemas de interesse entre dois grupos. Um exemplo é a alocação de estudantes de medicina formandos que preferem determinados hospitais, listando-os em ordem e hospitais que preferem alguns estudantes de medicina, ordenados por suas notas ou área mais deficiente no hospital, por exemplo.
+
+	No programa desenvolvido, um \textit{matching} é o casamento entre dois indivíduos, onde todos indivíduos são separados por genêro. Haverão então um grupo de homens e um de mulheres, onde cada homem possui uma lista de preferência sobre as mulheres e cada mulher possui uma lista de preferências sobre os homens.
+
+	Para mensurar a qualidade dos casamentos obtidos pelo método heurístico, utilizaremos o índice de satisfabilidade. Esse índice é expresso como a média das posições que os maridos e/ou esposas ocupam na lista de preferências de seus respectivos parceiros. Isso quer dizer que se um homem casa com a 1ª mulher da sua lista de preferências, ele contribui com 1 para o incremento do índice de satisfabilidade, se ele se casa com a 2ª mulher da lista, ela contribui com 2 para o incremento do índice. Quanto menor esse índice, melhor o casamento para esse grupo.
+
+	Neste problema, as pessoas são referenciadas através de chaves ou ids, contadas de $1$ a $n$. Logo, $n$ é a quantidade de elementos do conjunto.
+
+	A estratégia proposta para a resolução do casamento estável no grupo em questão, é aplicar o algoritmo de Gale Stanley para encontrar um casamento ideal. Mais informações sobre o algoritmo de Gale Stanley podem ser obtidas nas referências sobre o SMP no final deste documento.
+
+\section{REFERÊNCIAS RELACIONADAS}
+\label{trabalhos_relacionados}
+
+Podemos dividir as referências associadas ao problema estudado e à solução proposta dentre os seguintes grupos:
+
+\begin{itemize}
+\item \textbf{Linguagem C:} 
+	Todo o trabalho foi implementado em linguagem de programação C. A linguagem C é uma linguagem de propósito geral amplamente utilizada no desenvolvimento de sistemas de alto desempenho, de tempo real, sistemas operacionais, compiladores, dentre outros. O compilador mais utilizado para a linguagem C é o GCC (desenvolvido pelo projeto GNU). Mais informações sobre a linguagem C podem ser encontradas em \cite{kernighan1988cpl}.
+\item \textbf{Projeto e análise de algoritmos:}
+	Algoritmos são procedimentos computacionais capazes de resolver diversos problemas do mundo real. O estudo de algoritmos é essencial para o desenvolvimento de técnicas mais eficientes e eficazes para a solução desses problemas. Mais informações sobre o projeto e análise de algoritmos podem ser encontradas em \cite{ziviani2007pai,cormen2001ia,sedgewick2001acp}
+%\item \textbf{Stable Marriage Problem:}
+%	Citar a(s) referências utilizadas para estudar o problema e sua solução.
+\end{itemize}
+
+\subsection{Estruturas de dados}
+
+Para operar sobre a heurística utilizou-se um Tipo Abstrato de Dados de lista duplamente encadeada modificado de tal forma que armazenasse informações relevantes ao indivíduo como estado atual (casado ou não) e id do indivíduo do outro grupo com o qual este está casado.
+A lista de preferências dos indivíduos foi representada utilizando-se essa lista e o grupo de pessoas do mesmo sexo foi agrupado em um vetor de listas alocado dinamicamente de acordo com a quantidade de pessoas nesse grupo. Tal informação é conhecida a priori a partir da leitura do arquivo de entrada antes da execução do algoritmo.
+
+A implementação de listas e algumas operações de lista foram baseadas na implementação do Prof. Fernando V. Paulovich do Instituto de Ciências Matemáticas e de Computação da Universidade de São Paulo (USP). Mais informações podem ser obtidas nas referências.
+
+A complexidade de espaço deste programa é $O(n^2)$, visto que para cada indíviduo acrescido no tamanho total, o tamanho de todas as listas aumenta em uma unidade.
+
+Abaixo a descrição do Tipo Abstrato de Dado utilizado e seus elementos.
+\newpage
+\subsubsection{Indivíduo}
+
+Armazena informações das listas relacionadas ao indíviduo e possui um apontador para a lista de interesses desse indivíduo.
+\begin{algorithm}
+\begin{footnotesize}
+
+	status $casado$\;
+	id da pessoa com quem se casou\;
+	apontador para início da lista\;
+	apontador para o fim da lista\;
+	
+\caption{lista}%
+\end{footnotesize}
+\end{algorithm}
+
+
+\subsubsection{Lista de preferências}
+
+Armazena as ids das pessoas com as quais o indivíduo quer se casar ordenados por preferência e encapsula outras estruturas abaixo descritas, como o nó da lista e o Tipo ITEM.
+
+\begin{algorithm}
+\begin{footnotesize}
+
+	tipo ITEM\;
+	apontador para o elemento seguinte\;
+	apontador para o elemento anterior\;
+
+\caption{Nó da lista}%
+\end{footnotesize}
+\end{algorithm}
+
+\begin{algorithm}
+\begin{footnotesize}
+
+	índice do nó na lista (1º nó, 2º nó, ...) \;
+	valor\;
+
+\caption{Tipo ITEM}%
+\end{footnotesize}
+\end{algorithm}
+
+
+\subsection{Algoritmos da heurística}
+
+A seguir, descrevemos a estrutura de dados e as principais funções da heurística com pseudocódigo. Analisou-se a complexidade dos algoritmos em termos do número de indíviduos por grupo ($n$).
+
+\subsubsection{Método em que os homens propõem}
+
+Essa função tenta casar todos os homens, indicados por seu índice $i$, através da função $casa\_homem$, enquanto houverem homens solteiro. Essa função é executada $n$ vezes e em cada iteração chama a função $casa\_homem$ de complexidade $O(n)$.
+\newpage
+
+\begin{algorithm}
+\begin{footnotesize}
+
+	\While{homens solteiros $>$ 0}{
+		casa\_homem($i$)\;
+		i++\;
+	}
+	
+\caption{men\_purpose\_algorithm(lista de homens, lista de mulheres, n)}%
+\end{footnotesize}
+\end{algorithm}
+
+\subsubsection{Casa homem}
+
+Procura um par disponível e em caso de conflito com uma mulher já casada, desempata utilizando a lista de preferências da mulher com dois pretendentes chamando outra função. A complexidade dessa função é $O(n)$.
+
+\begin{algorithm}[h!]
+\begin{footnotesize}
+	
+	novo nó cursor = primeira opção do homem\;
+	\While{homem $i$ está casado}{
+		\eIf{mulher $i$ na lista de preferência do homem está casada}{
+		  melhor opção = Desempata(maridoatual, pretendente)\;
+		  \eIf{melhor opção = pretendente}{
+		    descasa(maridoatual, mulher)\;
+		    casa com o pretendente corrente\;
+		   }
+		   {cursor = próximo na lista do homem}
+		}{
+		  casa o homem corrente com a mulher na lista\;
+		  qunantidade\_solteiros - -\;
+		}
+	}
+
+\caption{casa\_homem(grupo de homens, grupo de mulheres, $i$, quantidade\_solteiros)}%
+\end{footnotesize}
+\end{algorithm}
+
+\subsubsection{Desempata}
+
+Retorna o homem que é mais preferido para a mulher, de acordo com a lista de preferências dela. A complexidade assintótica dessa função é $O(n)$, já que no pior caso deve percorrer os $n$ elementos da lista de preferência da mulher.
+
+\begin{algorithm}[h!]
+\begin{footnotesize}
+	 Tira daqui\;
+	\While{não é o final da lista de preferência da mulher}{
+	  \If{idhomem1 == preferência da mulher}{
+		\Return idhomem1\;
+	  }
+	  \If{idhomem1 == preferência da mulher}{
+		\Return idhomem2\;
+	  }
+	}
+		
+\caption{desempata(mulher, idhomem1, idhomem2)}%
+\end{footnotesize}
+\end{algorithm}
+
+
+\subsubsection{Cálculo da satisfabilidade}
+
+O índice de satisfabilidade é descrito como o índice da posição que o cônjuge ocupa na lista de preferências de seu parceiro(a), i.e., se o homem casou-se com a 1ª na sua lista de preferências, é acrescido $1$ ao cálculo do índice dos homens e assim por diante. Ao final, esse número deve ser dividido por $n$ para ter o valor médio do índice. A complexidade dessa função é $O(n^2)$.
+
+
+\begin{algorithm}[h!]
+\begin{footnotesize}
+
+    novo nó cursor\;
+    satisf = 0\;
+    \For {(i=1; i$<$=n; i++)}{
+        cursor = lista[i].inicio\;
+        satisf++\;
+        \While {cursor.item.valor diferente de grupo[i].casado\_com\_id} {
+            satisf++\;
+            cursor = cursor-$>$proximo\;
+        }
+    }
+    \Return satisf / n\;
+		
+\caption{satisfabilidade(lista grupo1, $n$)}%
+\end{footnotesize}
+\end{algorithm}
+
+\section{SOLUÇÃO PROPOSTA}
+\label{solucao_proposta}
+
+A solução proposta para o SMP, é utilizar o algoritmo de Gale-Stanley, operando sobre o Tipo Abstrato de Dado de lista criado.
+
+O algoritmo se resume em tentar casar todos os homens seguindo suas ordens de preferências. Caso haja algum conflito (um homem deseja casar-se com uma mulher já casada), a lista de preferências dessa mulher é acessada e dentre os dois homens conflitantes, aquele que for de maior interesse para a mulher será casado com essa mulher. O estado de casado do homem rejeitado passa a ser NÃO casado. Na próxima iteração o homem rejeitado tentará ser casado novamente. Quando não houver mais homens não casados, uma solução estável foi obtida.
+
+O algoritmo poderia tentar casar a mulheres, buscando parceiros para elas em algoritmo análogo. Dessa maneira, a busca percorreria as melhores opções das mulheres primeiro e os homens podem decidir apenas entre as interessadas conflitantes. A mulher terá menor índice de satisfabilidade, o que quer dizer que o grupo que propõe neste algoritmo, obtém melhores parceiros.
+
+\section{IMPLEMENTAÇÃO}
+\label{implementacao}
+
+\subsection{Código}
+
+\subsubsection{Arquivos .c}
+
+\begin{itemize}
+\item \textbf{main.c:} Arquivo principal do programa, contém as funções de entrada e saída do algoritmo, alocação de memória necessária e chamada da função principal da heurística.
+\item \textbf{heuristica.c:} Define as operações que realizarão o método heurístico e avaliarão a qualidade dos resultados através do índice de satisfabilidade.
+\item \textbf{lista.c:} Define as funções que operam sobre o TAD lista adequado às necessidades do algoritmo.
+\end{itemize}
+
+\subsubsection{Arquivos .h}
+
+\begin{itemize}
+\item \textbf{heuristica.h:} Descreve o cabeçalho da heurística e das funções que avaliarão a qualidade dos resultados através do índice de satisfabilidade.
+\item \textbf{lista.h:} Define as estruturas de dados e cabeçalhos das funções relacionadas às operações sobre o TAD lista.
+\end{itemize}
+
+\subsection{Compilação e execução}
+
+O programa deve ser compilado através do compilador GCC através de um $makefile$ ou através do seguinte comando em terminal:
+
+\begin{footnotesize}
+\begin{verbatim} gcc main.c heuristica.c lista.c -o tp0 \end{verbatim}
+\end{footnotesize}
+
+O comando para a execução do programa é apenas a execução do executável e 1 parâmetro para a execução, o nome do arquivo de entrada. O arquivo de saída é definido na especificação tal que seja \textit{output.txt}. Caso não haja ao menos 1 argumento, o programa encerra a execução.
+
+\begin{footnotesize}
+\begin{verbatim} ./tp0 input.txt \end{verbatim}
+\end{footnotesize}
+
+\subsubsection{Formato da entrada}
+
+O arquivo de entrada cujo nome é passado como argumento para o executável, contém uma linha que define a quantidade de instâncias que este arquivo possui, ou seja, quantas entradas diferentes estão contidas nesse arquivo que deverão ser executadas por esse algoritmo.
+Na segunda linha, há o número $n$ de indivíduos em cada conjunto, que será, por consequência, a quantidade de elementos contidos naquela linha, já que a lista de preferência percorre todos os elementos do outro conjunto.
+
+Um exemplo de arquivo de entrada é dado a seguir:
+
+\begin{footnotesize}
+\begin{verbatim}
+1
+4
+2 4 1 3
+4 1 2 3
+2 3 4 1
+2 3 4 1
+2 3 4 1
+3 4 2 1
+3 2 1 4
+3 2 4 1
+\end{verbatim}
+\end{footnotesize}
+
+\subsubsection{Formato da saída}
+
+A saída do programa, armazenada em um arquivo de saída \textit{output.txt}, contém informações sobre os $n$ casais formados e a qualidade dos casamentos obtidos através do índice de satisfabilidade. Para cada casamento, é impresso as ids dos homens à esquerda e a id de suas respectivas esposas à direita.
+Após as ids dos conjunges é apresentado o índice de satisfabilidade geral, a satisfabilidade masculina e a satisfabilidade feminina com precisão de 3 casas decimais. Para o caso de várias instâncias, a sequência se repete abaixo da anterior. Um exemplo de saída é dado abaixo:
+
+\begin{footnotesize}
+\begin{verbatim}
+2 4
+1 1
+3 2
+4 3
+2.250
+1.750
+2.750
+\end{verbatim}
+\end{footnotesize}
+
+
+\section{CONCLUSÃO}
+\label{conclusao}
+
+Neste trabalho foi implementado o algoritmo de Gale Stanley que opera sobre um TAD de listas encadeadas adaptado para o problema.
+
+Dentre as adversidades encontradas durante o desenvolvimento desse algoritmo, a maior delas foi ter desenvolvido um algoritmo recursivo que casava obrigatoriamente o homem $i$ atual. Caso a mulher esteja casada, o algoritmo percorreria todas as preferências do homem rejeitado até que ele se case. Quando a iteração percorresse todos os homens o programa é terminado, pois todos os casais estarão formados. Essa implementação decorreu de uma falha na interpretação do algoritmo de Gale Stanley e não foi utilizado pela complexidade em provar que este método também resultava em uma solução estável.
+
+O trabalho atingiu seus principais objetivos: a prática da linguagem de programação C e o estudo de problemas complexos. Além dos objetivos propostos, este trabalho permitiu a obtenção de outros conhecimentos, importantes na área de Ciência da Computação, como a utilização de \LaTeX para escrever o relatório técnico nos padrões da Sociedade Brasileira de Computação e utilização de um arquivo $makefile$ para compilação e execução do programa.
+
+Algumas melhorias que poderiam ser consideradas neste trabalho são:
+\begin{itemize}
+\item Utilização de lista simplesmente encadeada.
+\item Armazenamento do índice do nó do cônjuge na lista, permitindo o cálculo da satisfabilidade em $O(n)$.
+\end{itemize}
+\bibliographystyle{sbc}
+\bibliography{tp0}
+
+\end{document}

@@ -1,0 +1,124 @@
+# depslib dependency file v1.0
+1331585037 source:/home/bruno/Dropbox/UFMG/3º Período/AEDs III/TP 0/V 1.0/TP0/list.c
+	<stdio.h>
+	<stdlib.h>
+	"list.h"
+	<stdio.h>
+	<stdlib.h>
+	"list.h"
+	<stdio.h>
+	<stdlib.h>
+	"list.h"
+
+1331588833 
+
+1331507688 /home/bruno/Dropbox/UFMG/3º Período/AEDs III/TP 0/V 1.0/TP0/list.h
+
+1331572907 source:/home/bruno/Dropbox/UFMG/3º Período/AEDs III/TP 0/V 1.0/TP0/main.c
+	<stdio.h>
+	<stdlib.h>
+	"list.h"
+	"heuristica.h"
+	<stdio.h>
+	<stdlib.h>
+	"list.h"
+	"heuristica.h"
+	<stdio.h>
+	<stdlib.h>
+	"list.h"
+	"heuristica.h"
+
+1331515560 a.h"
+
+1331483301 /home/bruno/Dropbox/UFMG/3º Período/AEDs III/TP 0/V 1.0/TP0/node.h
+
+1331481266 source:/home/bruno/Dropbox/UFMG/3º Período/AEDs III/TP 0/V 1.0/TP0/node.c
+	"node.h"
+
+1331492696 source:/home/bruno/Dropbox/UFMG/3º Período/AEDs III/TP 0/V 1.0/TP0/src/heuristica.c
+	"heuristica.h"
+
+1331492697 /home/bruno/Dropbox/UFMG/3º Período/AEDs III/TP 0/V 1.0/TP0/src/heuristica.h
+
+1331496307 source:/home/bruno/Dropbox/UFMG/3º Período/AEDs III/TP 0/V 1.0/TP0/src/list.c
+	<stdlib.h>
+	<stdio.h>
+	"list.h"
+
+1331493646 /home/bruno/Dropbox/UFMG/3º Período/AEDs III/TP 0/V 1.0/TP0/src/list.h
+
+1331497552 source:/home/bruno/Dropbox/UFMG/3º Período/AEDs III/TP 0/V 1.0/TP0/src/main.c
+	<stdio.h>
+	<stdlib.h>
+	"list.h"
+	"heuristica.h"
+
+1331515560 source:/home/bruno/Dropbox/UFMG/3º Período/AEDs III/TP 0/V 1.0/TP0/heuristica.c
+	"heuristica.h"
+	"heuristica.h"
+	"heuristica.h"
+
+1331515694 /home/bruno/Dropbox/UFMG/3º Período/AEDs III/TP 0/V 1.0/TP0/heuristica.h
+
+1331588833 source:c:\users\bruno\dropbox\ufmg\3� per�odo\aeds iii\tp 0\v 1.0\tp0\list.c
+	<stdio.h>
+	<stdlib.h>
+	"list.h"
+
+1331507688 c:\users\bruno\dropbox\ufmg\3� per�odo\aeds iii\tp 0\v 1.0\tp0\list.h
+
+1331572907 source:c:\users\bruno\dropbox\ufmg\3� per�odo\aeds iii\tp 0\v 1.0\tp0\main.c
+	<stdio.h>
+	<stdlib.h>
+	"list.h"
+	"heuristica.h"
+
+1331515694 c:\users\bruno\dropbox\ufmg\3� per�odo\aeds iii\tp 0\v 1.0\tp0\heuristica.h
+
+1331515560 source:c:\users\bruno\dropbox\ufmg\3� per�odo\aeds iii\tp 0\v 1.0\tp0\heuristica.c
+	"heuristica.h"
+
+1332108071 source:/home/bruno/Dropbox/UFMG/3º Período/AEDs III/TP 0/V 1.0/TP0/heuristica.c
+	<stdlib.h>
+	"heuristica.h"
+	"list.h"
+	<stdio.h>
+
+1332105380 /home/bruno/Dropbox/UFMG/3º Período/AEDs III/TP 0/V 1.0/TP0/heuristica.h
+	"list.h"
+
+1331940172 source:/home/bruno/Dropbox/UFMG/3º Período/AEDs III/TP 0/V 1.0/TP0/list.c
+	<stdio.h>
+	<stdlib.h>
+	"list.h"
+
+1331730608 /home/bruno/Dropbox/UFMG/3º Período/AEDs III/TP 0/V 1.0/TP0/list.h
+
+1332107979 source:/home/bruno/Dropbox/UFMG/3º Período/AEDs III/TP 0/V 1.0/TP0/main.c
+	<stdio.h>
+	<stdlib.h>
+	"list.h"
+	"heuristica.h"
+
+1332415278 source:/home/bruno/Dropbox/UFMG/3º Período/AEDs III/TP 0/V 1.0/TP0/src/heuristica.c
+	<stdlib.h>
+	<stdio.h>
+	"heuristica.h"
+	"lista.h"
+
+1332415232 /home/bruno/Dropbox/UFMG/3º Período/AEDs III/TP 0/V 1.0/TP0/src/heuristica.h
+	"lista.h"
+
+1332388363 /home/bruno/Dropbox/UFMG/3º Período/AEDs III/TP 0/V 1.0/TP0/src/lista.h
+
+1332388975 source:/home/bruno/Dropbox/UFMG/3º Período/AEDs III/TP 0/V 1.0/TP0/src/lista.c
+	<stdio.h>
+	<stdlib.h>
+	"lista.h"
+
+1332453398 source:/home/bruno/Dropbox/UFMG/3º Período/AEDs III/TP 0/V 1.0/TP0/src/main.c
+	<stdio.h>
+	<stdlib.h>
+	"lista.h"
+	"heuristica.h"
+
